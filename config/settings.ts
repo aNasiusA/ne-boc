@@ -1,4 +1,4 @@
-import { getItem, setItem } from "@/utils/asyncStorage";
+import { getItem, removeItem, setItem } from "@/utils/asyncStorage";
 
 export const Settings = [
   {
@@ -61,6 +61,7 @@ export const Settings = [
 
 (async () => {
   const existing = await getItem("settings");
+  await removeItem("hasOnboarded");
   if (!existing) {
     await setItem("settings", JSON.stringify(Settings));
   }

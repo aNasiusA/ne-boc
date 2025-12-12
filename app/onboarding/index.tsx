@@ -19,7 +19,7 @@ export default function OnboardingScreen() {
         onSkip={handleDone}
         bottomBarHighlight={false}
         showSkip={false}
-        containerStyles={{ paddingHorizontal: 15 }}
+        containerStyles={{ paddingHorizontal: 15, paddingBottom: 30 }}
         pages={[
           {
             backgroundColor: Theme.colors.brand.fieryTerracotta,

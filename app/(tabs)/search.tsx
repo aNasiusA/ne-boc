@@ -71,9 +71,6 @@ export default function SearchScreen() {
 
   const handleCategorySelect = (category: string) => {
     setSelectedCategory(category);
-    if (category === "All") {
-      setSearchText("");
-    }
   };
 
   const handleClear = () => {
@@ -103,25 +100,29 @@ export default function SearchScreen() {
           style={styles.categoryContainer}
           contentContainerStyle={styles.categoryContent}
         >
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category}
-              style={[
-                styles.categoryButton,
-                selectedCategory === category && styles.selectedCategoryButton,
-              ]}
-              onPress={() => handleCategorySelect(category)}
-            >
-              <Text
+          {categories.map((category) => {
+            const isSelected = selectedCategory === category;
+            return (
+              <TouchableOpacity
+                key={category}
                 style={[
-                  styles.categoryText,
-                  selectedCategory === category && styles.selectedCategoryText,
+                  styles.categoryButton,
+                  isSelected && styles.selectedCategoryButton,
                 ]}
+                onPress={() => handleCategorySelect(category)}
+                activeOpacity={0.7}
               >
-                {category}
-              </Text>
-            </TouchableOpacity>
-          ))}
+                <Text
+                  style={[
+                    styles.categoryText,
+                    isSelected && styles.selectedCategoryText,
+                  ]}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
         <FlatList
           data={filteredItems}
@@ -140,32 +141,41 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     paddingHorizontal: 16,
-    paddingTop: 20,
-    paddingBottom: 10,
+    paddingBottom: 12,
   },
   categoryContainer: {
-    maxHeight: 50,
-    marginBottom: 10,
+    flexGrow: 0,
+    marginBottom: 16,
+    minHeight: 48,
   },
   categoryContent: {
     paddingHorizontal: 16,
     alignItems: "center",
   },
   categoryButton: {
-    backgroundColor: Colors.platinum,
-    paddingHorizontal: 12,
+    backgroundColor: Colors.background,
+    paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: 24,
     marginRight: 8,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    minWidth: 60,
+    alignItems: "center",
+    justifyContent: "center",
   },
+
   selectedCategoryButton: {
     backgroundColor: Colors.primary,
+    borderColor: Colors.primary,
   },
   categoryText: {
     fontSize: 14,
-    color: Colors.text,
+    fontWeight: "500",
+    color: Colors.textSecondary,
   },
   selectedCategoryText: {
     color: Colors.white,
+    fontWeight: "600",
   },
 });
