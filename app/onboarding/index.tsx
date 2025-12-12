@@ -4,10 +4,12 @@ import { useRouter } from "expo-router";
 import Lottie from "lottie-react-native";
 import { Dimensions, StyleSheet, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const { width, height } = Dimensions.get("window");
 
 export default function OnboardingScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const handleDone = async () => {
     await setItem("hasOnboarded", "true");
     router.replace("/(tabs)");
@@ -19,7 +21,10 @@ export default function OnboardingScreen() {
         onSkip={handleDone}
         bottomBarHighlight={false}
         showSkip={false}
-        containerStyles={{ paddingHorizontal: 15, paddingBottom: 30 }}
+        containerStyles={{
+          paddingHorizontal: 15,
+          paddingBottom: insets.bottom,
+        }}
         pages={[
           {
             backgroundColor: Theme.colors.brand.fieryTerracotta,
