@@ -1,15 +1,25 @@
-import { Colors, Theme } from "@/constants/colors";
+import Colors, { Theme } from "@/constants/colors";
 import { setItem } from "@/utils/asyncStorage";
 import { useRouter } from "expo-router";
 import Lottie from "lottie-react-native";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { useState } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 const { width, height } = Dimensions.get("window");
 
+const nextButton = () => null;
+
 export default function OnboardingScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const [currentIndex, setCurrentIndex] = useState(0);
   const handleDone = async () => {
     await setItem("hasOnboarded", "true");
     router.replace("/(tabs)");
@@ -19,6 +29,7 @@ export default function OnboardingScreen() {
       <Onboarding
         onDone={handleDone}
         onSkip={handleDone}
+        pageIndexCallback={setCurrentIndex}
         bottomBarHighlight={false}
         showSkip={false}
         containerStyles={{
@@ -89,11 +100,29 @@ export default function OnboardingScreen() {
           },
         ]}
       />
+      {currentIndex === 3 && (
+        <TouchableOpacity style={styles.nextButton} onPress={handleDone}>
+          <Text style={styles.nextButtonText}>Done</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.background },
+  container: { flex: 1, backgroundColor: "transparent" },
   lottie: { width: width * 0.9, height: width },
+  nextButton: {
+    position: "absolute",
+    top: 50,
+    right: 20,
+    backgroundColor: "transparent",
+    padding: 10,
+    borderRadius: 5,
+  },
+  nextButtonText: {
+    color: Colors.text,
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
